@@ -6,58 +6,74 @@
 <title>JAMB Core Science Prep</title>
 <style>
   :root{
-    --bg:#ffffff;
-    --panel:#ffffff;
-    --panel-2:#f7fbf8;
-    --line:#d9efe1;
-    --line-soft:#e3f3e9;
-    --ink:#0f2e1a;
-    --ink-dim:#4d6b57;
-    --ink-mute:#7c9986;
-    --green:#22a559;
-    --green-soft:#e3f9ec;
-    --red:#e0554a;
-    --red-soft:#fdeceb;
-    --mono: 'Courier New', ui-monospace, monospace;
-    --serif: 'Georgia', 'Iowan Old Style', serif;
+    --bg:#ffffff;--panel:#ffffff;--panel-2:#f7fbf8;--line:#d9efe1;--line-soft:#e3f3e9;
+    --ink:#0f2e1a;--ink-dim:#4d6b57;--ink-mute:#7c9986;
+    --green:#22a559;--green-soft:#e3f9ec;--red:#e0554a;--red-soft:#fdeceb;
+    --amber:#c98a1f;--amber-soft:#fbf1de;
+    --mono:'Courier New', ui-monospace, monospace; --serif:'Georgia','Iowan Old Style', serif;
   }
   *{box-sizing:border-box;}
-  body{
-    margin:0;
-    background:var(--bg);
-    color:var(--ink);
-    font-family: var(--mono);
-    min-height:100vh;
-    padding:24px 16px 60px;
-  }
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--mono);min-height:100vh;padding:24px 16px 60px;}
   .wrap{max-width:640px;margin:0 auto;}
-  header{margin-bottom:8px; display:flex; justify-content:space-between; align-items:flex-start; gap:12px;}
+
+  header{margin-bottom:8px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;}
   .eyebrow{font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--green);font-weight:700;margin-bottom:8px;}
-  h1{font-family: var(--serif);font-size:28px;font-weight:700;margin:0 0 6px;letter-spacing:-0.01em;color:var(--ink);}
+  h1{font-family:var(--serif);font-size:26px;font-weight:700;margin:0 0 6px;letter-spacing:-0.01em;}
   .sub{color:var(--ink-dim);font-size:13px;line-height:1.5;}
-  .reset-btn{border:1.5px solid var(--line);background:var(--panel-2);color:var(--ink-mute);padding:8px 12px;border-radius:100px;font-size:11px;font-family:var(--mono);font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;}
+  .header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0;}
+  .streak{display:flex;align-items:center;gap:5px;font-size:12px;font-weight:700;color:var(--amber);background:var(--amber-soft);padding:6px 10px;border-radius:100px;border:1px solid #f0ddb0;white-space:nowrap;}
+  .reset-btn{border:1.5px solid var(--line);background:var(--panel-2);color:var(--ink-mute);padding:7px 12px;border-radius:100px;font-size:11px;font-family:var(--mono);font-weight:700;cursor:pointer;white-space:nowrap;}
   .reset-btn:hover{border-color:var(--red);color:var(--red);}
-  .topic-bar{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0 24px;}
-  .chip{border:1.5px solid var(--line);background:var(--panel-2);color:#2c6b45;padding:8px 14px;border-radius:100px;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--mono);transition:all .15s ease;}
+
+  .main-tabs{display:flex;gap:6px;margin:22px 0 18px;border-bottom:1.5px solid var(--line-soft);}
+  .main-tab{padding:10px 4px;margin-right:18px;font-size:13px;font-weight:700;color:var(--ink-mute);cursor:pointer;border-bottom:2.5px solid transparent;}
+  .main-tab.active{color:var(--green);border-bottom-color:var(--green);}
+
+  .topic-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;}
+  .chip{border:1.5px solid var(--line);background:var(--panel-2);color:#2c6b45;padding:8px 14px;border-radius:100px;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--mono);}
   .chip:hover{border-color:var(--green);}
-  .chip.active{background:var(--green);color:#ffffff;border-color:var(--green);}
+  .chip.active{background:var(--green);color:#fff;border-color:var(--green);}
+
+  .mode-row{display:flex;gap:10px;margin-bottom:20px;}
+  .mode-btn{flex:1;padding:14px 12px;border-radius:14px;border:1.5px solid var(--line);background:var(--panel-2);cursor:pointer;text-align:left;}
+  .mode-btn.active{border-color:var(--green);background:var(--green-soft);}
+  .mode-btn .mtitle{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:3px;}
+  .mode-btn .mdesc{font-size:11px;color:var(--ink-mute);line-height:1.4;}
+
+  .timed-config{background:var(--panel-2);border:1.5px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:18px;}
+  .config-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+  .config-row:last-child{margin-bottom:0;}
+  .config-label{font-size:12px;color:var(--ink-dim);font-weight:700;}
+  .config-controls{display:flex;gap:6px;align-items:center;}
+  .stepper-btn{width:28px;height:28px;border-radius:8px;border:1.5px solid var(--line);background:#fff;color:var(--green);font-weight:900;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+  .stepper-val{min-width:44px;text-align:center;font-size:13px;font-weight:700;}
+  .start-btn{width:100%;padding:14px;border-radius:12px;border:none;background:var(--green);color:#fff;font-family:var(--mono);font-size:13px;font-weight:700;cursor:pointer;margin-top:4px;}
+
   .progress-row{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--ink-dim);margin-bottom:8px;}
+  .timer-display{font-weight:700;color:var(--amber);}
+  .timer-display.low{color:var(--red);}
   .progress-track{height:4px;background:var(--line-soft);border-radius:3px;overflow:hidden;margin-bottom:18px;}
   .progress-fill{height:100%;background:var(--green);width:0%;transition:width .3s ease;}
   .qgrid{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;}
-  .qbox{width:32px;height:32px;border-radius:8px;border:1.5px solid var(--line);background:var(--panel-2);color:var(--ink-mute);font-family:var(--mono);font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .12s ease;}
+  .qbox{width:32px;height:32px;border-radius:8px;border:1.5px solid var(--line);background:var(--panel-2);color:var(--ink-mute);font-family:var(--mono);font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;position:relative;}
   .qbox:hover{border-color:var(--green);}
   .qbox.answered{background:var(--green-soft);border-color:var(--green);color:var(--green);}
-  .qbox.current{background:var(--green);border-color:var(--green);color:#ffffff;}
+  .qbox.current{background:var(--green);border-color:var(--green);color:#fff;}
+  .qbox .bmk-dot{position:absolute;top:-3px;right:-3px;width:8px;height:8px;border-radius:50%;background:var(--amber);}
+
   .card{background:var(--panel);border:1.5px solid var(--line);border-radius:16px;padding:24px 22px;margin-bottom:16px;box-shadow:0 2px 14px rgba(34,165,89,0.06);}
   .qmeta{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+  .qmeta-left{display:flex;align-items:center;gap:8px;}
   .qnum{font-size:12px;color:var(--ink-mute);}
   .tag{font-size:10px;letter-spacing:0.06em;text-transform:uppercase;padding:4px 10px;border-radius:100px;border:1px solid var(--green);color:var(--green);font-weight:700;}
-  .qtext{font-family:var(--serif);font-size:18px;line-height:1.55;margin-bottom:20px;color:var(--ink);}
+  .bmk-btn{background:none;border:none;cursor:pointer;font-size:17px;color:var(--line);padding:0;line-height:1;}
+  .bmk-btn.on{color:var(--amber);}
+  .qtext{font-family:var(--serif);font-size:18px;line-height:1.55;margin-bottom:20px;}
   .options{display:flex;flex-direction:column;gap:10px;}
-  .opt{display:flex;align-items:flex-start;gap:12px;background:var(--panel-2);border:1.5px solid var(--line-soft);border-radius:12px;padding:13px 15px;cursor:pointer;font-size:14px;line-height:1.4;color:#1c3d29;transition:all .12s ease;}
+  .opt{display:flex;align-items:flex-start;gap:12px;background:var(--panel-2);border:1.5px solid var(--line-soft);border-radius:12px;padding:13px 15px;cursor:pointer;font-size:14px;line-height:1.4;color:#1c3d29;}
   .opt:hover{border-color:#9fd4b3;}
   .opt .letter{font-weight:800;color:var(--ink-mute);min-width:18px;}
+  .opt.selected-untimed{border-color:var(--green);background:var(--green-soft);}
   .opt.correct{border-color:var(--green);background:var(--green-soft);}
   .opt.correct .letter{color:var(--green);}
   .opt.wrong{border-color:var(--red);background:var(--red-soft);}
@@ -68,291 +84,167 @@
   .nav-row{display:flex;justify-content:space-between;gap:10px;margin-top:20px;}
   button.nav{flex:1;padding:13px;border-radius:12px;border:1.5px solid var(--line);background:var(--panel);color:#2c6b45;font-family:var(--mono);font-size:13px;font-weight:700;cursor:pointer;}
   button.nav:disabled{opacity:0.4;cursor:not-allowed;}
-  button.nav.primary{background:var(--green);color:#ffffff;border-color:var(--green);}
+  button.nav.primary{background:var(--green);color:#fff;border-color:var(--green);}
+
   .results{text-align:center;padding:36px 18px;}
   .score-big{font-family:var(--serif);font-size:58px;color:var(--green);line-height:1;margin-bottom:6px;font-weight:700;}
   .score-label{color:var(--ink-dim);font-size:13px;margin-bottom:26px;}
   .breakdown{text-align:left;background:var(--panel-2);border:1.5px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:20px;}
   .brow{display:flex;justify-content:space-between;padding:9px 0;font-size:13px;border-bottom:1px solid var(--line-soft);}
   .brow:last-child{border-bottom:none;}
-  .brow .name{color:var(--ink-dim);}
   .brow .val{color:var(--ink);font-weight:700;}
+
+  .review-section{margin-top:26px;text-align:left;}
+  .review-title{font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--red);font-weight:700;margin-bottom:12px;}
+  .review-card{background:var(--red-soft);border:1.5px solid #f3c9c5;border-radius:12px;padding:14px 16px;margin-bottom:10px;}
+  .review-q{font-family:var(--serif);font-size:14px;line-height:1.5;margin-bottom:10px;color:var(--ink);}
+  .review-line{font-size:12px;line-height:1.6;}
+  .review-line.your{color:var(--red);}
+  .review-line.correct{color:var(--green);font-weight:700;}
+
   .history-section{margin-top:30px;text-align:left;}
   .history-title{font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--green);font-weight:700;margin-bottom:10px;}
   .history-row{display:flex;justify-content:space-between;font-size:12.5px;padding:8px 0;border-bottom:1px solid var(--line-soft);color:#3d5f4a;}
   .clear-history{margin-top:14px;font-size:11px;color:var(--ink-mute);background:none;border:none;cursor:pointer;font-family:var(--mono);text-decoration:underline;}
   .clear-history:hover{color:var(--red);}
+
+  /* Glossary tab */
+  .glossary-empty{text-align:center;padding:50px 20px;color:var(--ink-mute);font-size:13px;}
+  .fact-tag-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;}
+  .g-card{background:var(--panel);border:1.5px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:12px;}
+  .g-term{font-family:var(--serif);font-size:16px;font-weight:700;color:var(--ink);margin-bottom:4px;}
+  .g-meaning{font-size:12.5px;color:var(--green);font-weight:700;margin-bottom:8px;}
+  .g-example{font-size:12px;color:var(--ink-mute);margin-bottom:8px;}
+  .g-fact{font-size:12.5px;line-height:1.55;color:#2c4a37;background:var(--panel-2);padding:10px 12px;border-radius:8px;border-left:3px solid var(--green);}
+  .fact-card{background:var(--green-soft);border:1.5px solid #c3ecd3;border-radius:14px;padding:16px 18px;margin-bottom:12px;}
+  .fact-text{font-size:13.5px;line-height:1.55;color:var(--ink);margin-bottom:8px;}
+  .fact-tag{font-size:10px;letter-spacing:0.05em;text-transform:uppercase;color:var(--green);font-weight:700;}
+  .section-label{font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-mute);font-weight:700;margin:22px 0 12px;}
+
   .hidden{display:none;}
 </style>
 </head>
 <body>
 <div class="wrap">
+
   <header>
     <div>
-      <div class="eyebrow">Chemistry &middot; Practice Set</div>
+      <div class="eyebrow">Chemistry &middot; Mathematics &middot; English &middot; Biology</div>
       <h1>JAMB Core Science Prep</h1>
-      <div class="sub">Mathematics, English, Chemistry & Biology — JAMB-style practice questions. Your scores are saved on this device.</div>
+      <div class="sub">Practice questions, timed mock sets, and quick-reference facts. Saved on this device.</div>
     </div>
-    <button class="reset-btn" id="resetBtn" title="Clear all saved progress and history">Reset</button>
+    <div class="header-right">
+      <div class="streak" id="streakBadge">🔥 0 day streak</div>
+      <button class="reset-btn" id="resetBtn" title="Clear all saved progress and history">Reset</button>
+    </div>
   </header>
 
-  <div class="topic-bar" id="topicBar"></div>
+  <div class="main-tabs">
+    <div class="main-tab active" id="tabPractice">Practice</div>
+    <div class="main-tab" id="tabGlossary">Need-to-Know</div>
+  </div>
 
-  <div id="quizArea">
-    <div class="progress-row">
-      <span id="progressLabel">Question 1 of 15</span>
-      <span id="progressTopic">Stoichiometry</span>
-    </div>
-    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
-    <div class="qgrid" id="qGrid"></div>
+  <!-- ============ PRACTICE TAB ============ -->
+  <div id="practiceTab">
 
-    <div class="card">
-      <div class="qmeta">
-        <span class="qnum" id="qnum">Q1</span>
-        <span class="tag" id="qtag">Stoichiometry</span>
+    <div id="setupArea">
+      <div class="topic-bar" id="topicBar"></div>
+
+      <div class="mode-row">
+        <div class="mode-btn active" id="modeStudy">
+          <div class="mtitle">📖 Study mode</div>
+          <div class="mdesc">Answer at your own pace. See the correct answer and explanation right after each question.</div>
+        </div>
+        <div class="mode-btn" id="modeTimed">
+          <div class="mtitle">⏱ Timed mode</div>
+          <div class="mdesc">Random questions, one countdown for the whole set. Answers revealed only at the end.</div>
+        </div>
       </div>
-      <div class="qtext" id="qtext"></div>
-      <div class="options" id="options"></div>
-      <div class="explain" id="explain"></div>
+
+      <div class="timed-config hidden" id="timedConfig">
+        <div class="config-row">
+          <span class="config-label">Number of questions</span>
+          <div class="config-controls">
+            <button class="stepper-btn" id="qCountDown">−</button>
+            <span class="stepper-val" id="qCountVal">20</span>
+            <button class="stepper-btn" id="qCountUp">+</button>
+          </div>
+        </div>
+        <div class="config-row">
+          <span class="config-label">Time limit (minutes)</span>
+          <div class="config-controls">
+            <button class="stepper-btn" id="timeLimitDown">−</button>
+            <span class="stepper-val" id="timeLimitVal">15</span>
+            <button class="stepper-btn" id="timeLimitUp">+</button>
+          </div>
+        </div>
+      </div>
+
+      <button class="start-btn" id="startBtn">Start Study Session →</button>
+
+      <div class="section-label" id="bmkSectionLabel" style="display:none;">Bookmarked questions</div>
+      <div id="bmkList"></div>
     </div>
 
-    <div class="nav-row">
-      <button class="nav" id="prevBtn">&larr; Previous</button>
-      <button class="nav primary" id="nextBtn">Next &rarr;</button>
+    <div id="quizArea" class="hidden">
+      <div class="progress-row">
+        <span id="progressLabel">Question 1 of 15</span>
+        <span id="timerDisplay" class="timer-display hidden"></span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="qgrid" id="qGrid"></div>
+
+      <div class="card">
+        <div class="qmeta">
+          <div class="qmeta-left">
+            <span class="qnum" id="qnum">Q1</span>
+            <span class="tag" id="qtag">Stoichiometry</span>
+          </div>
+          <button class="bmk-btn" id="bmkBtn" title="Bookmark this question">☆</button>
+        </div>
+        <div class="qtext" id="qtext"></div>
+        <div class="options" id="options"></div>
+        <div class="explain" id="explain"></div>
+      </div>
+
+      <div class="nav-row">
+        <button class="nav" id="prevBtn">&larr; Previous</button>
+        <button class="nav primary" id="nextBtn">Next &rarr;</button>
+      </div>
+    </div>
+
+    <div id="resultsArea" class="results hidden">
+      <div class="score-big" id="finalScore">0/15</div>
+      <div class="score-label" id="finalLabel">correct</div>
+      <div class="breakdown" id="breakdown"></div>
+      <button class="nav primary" style="width:100%;" id="retryBtn">Back to setup</button>
+
+      <div class="review-section hidden" id="reviewSection">
+        <div class="review-title">Questions to review</div>
+        <div id="reviewList"></div>
+      </div>
+
+      <div class="history-section hidden" id="historySection">
+        <div class="history-title">Past attempts</div>
+        <div id="historyList"></div>
+        <button class="clear-history" id="clearHistoryBtn">Clear history</button>
+      </div>
     </div>
   </div>
 
-  <div id="resultsArea" class="results hidden">
-    <div class="score-big" id="finalScore">0/15</div>
-    <div class="score-label" id="finalLabel">correct</div>
-    <div class="breakdown" id="breakdown"></div>
-    <button class="nav primary" style="width:100%;" id="retryBtn">Try again</button>
-
-    <div class="history-section hidden" id="historySection">
-      <div class="history-title">Past attempts</div>
-      <div id="historyList"></div>
-      <button class="clear-history" id="clearHistoryBtn">Clear history</button>
-    </div>
+  <!-- ============ GLOSSARY TAB ============ -->
+  <div id="glossaryTab" class="hidden">
+    <div class="topic-bar" id="glossarySubjectBar"></div>
+    <div id="glossaryContent"></div>
   </div>
+
 </div>
 
 <script src="questions/chemistry.js"></script>
 <script src="questions/mathematics.js"></script>
 <script src="questions/english.js"></script>
 <script src="questions/biology.js"></script>
-<script>
-const QUESTIONS = [...CHEMISTRY_QUESTIONS, ...MATHEMATICS_QUESTIONS, ...ENGLISH_QUESTIONS, ...BIOLOGY_QUESTIONS];
-
-const TOPICS = ["All", "Stoichiometry", "Gas Laws", "Kinetic Theory"];
-const STORAGE_KEY = "chem-quiz-history-v1";
-
-let activeTopic = "All";
-let filtered = [...QUESTIONS];
-let current = 0;
-let answers = {};
-
-function loadHistory(){
-  try{
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : [];
-  }catch(e){ return []; }
-}
-function saveHistory(history){
-  try{
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
-    return true;
-  }catch(e){ return false; }
-}
-
-function getFiltered(){
-  return activeTopic === "All" ? QUESTIONS : QUESTIONS.filter(q => q.topic === activeTopic);
-}
-
-function renderTopicBar(){
-  const bar = document.getElementById('topicBar');
-  bar.innerHTML = '';
-  TOPICS.forEach(t => {
-    const chip = document.createElement('div');
-    chip.className = 'chip' + (t === activeTopic ? ' active' : '');
-    chip.textContent = t;
-    chip.onclick = () => {
-      activeTopic = t;
-      filtered = getFiltered();
-      current = 0;
-      answers = {};
-      renderTopicBar();
-      renderQuestion();
-      document.getElementById('quizArea').classList.remove('hidden');
-      document.getElementById('resultsArea').classList.add('hidden');
-    };
-    bar.appendChild(chip);
-  });
-}
-
-function renderQGrid(){
-  const grid = document.getElementById('qGrid');
-  grid.innerHTML = '';
-  filtered.forEach((q, i) => {
-    const box = document.createElement('div');
-    box.className = 'qbox';
-    if(i === current) box.classList.add('current');
-    else if(answers[i] !== undefined) box.classList.add('answered');
-    box.textContent = i + 1;
-    box.title = answers[i] !== undefined ? 'Answered' : 'Unanswered';
-    box.onclick = () => {
-      current = i;
-      renderQuestion();
-    };
-    grid.appendChild(box);
-  });
-}
-
-function renderQuestion(){
-  const q = filtered[current];
-  document.getElementById('qnum').textContent = 'Q' + (current+1);
-  document.getElementById('qtag').textContent = q.topic;
-  document.getElementById('qtext').textContent = q.q;
-  document.getElementById('progressLabel').textContent = `Question ${current+1} of ${filtered.length}`;
-  document.getElementById('progressTopic').textContent = q.topic;
-  document.getElementById('progressFill').style.width = `${((current)/filtered.length)*100}%`;
-
-  const optsDiv = document.getElementById('options');
-  optsDiv.innerHTML = '';
-  const letters = ['A','B','C','D'];
-  const selected = answers[current];
-
-  q.options.forEach((opt, i) => {
-    const div = document.createElement('div');
-    div.className = 'opt';
-    if(selected !== undefined){
-      div.classList.add('disabled');
-      if(i === q.correct) div.classList.add('correct');
-      else if(i === selected) div.classList.add('wrong');
-    }
-    div.innerHTML = `<span class="letter">${letters[i]}</span><span>${opt}</span>`;
-    div.onclick = () => {
-      if(answers[current] !== undefined) return;
-      answers[current] = i;
-      renderQuestion();
-    };
-    optsDiv.appendChild(div);
-  });
-
-  const explainDiv = document.getElementById('explain');
-  if(selected !== undefined){
-    explainDiv.textContent = q.explain;
-    explainDiv.classList.add('show');
-  } else {
-    explainDiv.classList.remove('show');
-    explainDiv.textContent = '';
-  }
-
-  document.getElementById('prevBtn').disabled = current === 0;
-  document.getElementById('nextBtn').textContent = current === filtered.length - 1 ? 'Finish →' : 'Next →';
-
-  renderQGrid();
-}
-
-document.getElementById('prevBtn').onclick = () => {
-  if(current > 0){ current--; renderQuestion(); }
-};
-
-document.getElementById('nextBtn').onclick = () => {
-  if(current < filtered.length - 1){
-    current++;
-    renderQuestion();
-  } else {
-    finishQuiz();
-  }
-};
-
-function finishQuiz(){
-  let correctCount = 0;
-  const byTopic = {};
-  filtered.forEach((q, i) => {
-    byTopic[q.topic] = byTopic[q.topic] || {correct:0, total:0};
-    byTopic[q.topic].total++;
-    if(answers[i] === q.correct){
-      correctCount++;
-      byTopic[q.topic].correct++;
-    }
-  });
-
-  document.getElementById('finalScore').textContent = `${correctCount}/${filtered.length}`;
-  const pct = Math.round((correctCount/filtered.length)*100);
-  document.getElementById('finalLabel').textContent = `correct — ${pct}%`;
-
-  const breakdown = document.getElementById('breakdown');
-  breakdown.innerHTML = '';
-  Object.entries(byTopic).forEach(([topic, stats]) => {
-    const row = document.createElement('div');
-    row.className = 'brow';
-    row.innerHTML = `<span class="name">${topic}</span><span class="val">${stats.correct}/${stats.total}</span>`;
-    breakdown.appendChild(row);
-  });
-
-  const history = loadHistory();
-  history.unshift({
-    date: new Date().toISOString(),
-    topic: activeTopic,
-    score: correctCount,
-    total: filtered.length
-  });
-  saveHistory(history.slice(0, 20));
-
-  renderHistory();
-
-  document.getElementById('quizArea').classList.add('hidden');
-  document.getElementById('resultsArea').classList.remove('hidden');
-}
-
-function renderHistory(){
-  const history = loadHistory();
-  const section = document.getElementById('historySection');
-  const list = document.getElementById('historyList');
-  if(history.length === 0){
-    section.classList.add('hidden');
-    return;
-  }
-  section.classList.remove('hidden');
-  list.innerHTML = '';
-  history.forEach(h => {
-    const row = document.createElement('div');
-    row.className = 'history-row';
-    const d = new Date(h.date);
-    row.innerHTML = `<span>${d.toLocaleDateString()} &middot; ${h.topic}</span><span>${h.score}/${h.total}</span>`;
-    list.appendChild(row);
-  });
-}
-
-document.getElementById('retryBtn').onclick = () => {
-  current = 0;
-  answers = {};
-  document.getElementById('quizArea').classList.remove('hidden');
-  document.getElementById('resultsArea').classList.add('hidden');
-  renderQuestion();
-};
-
-document.getElementById('clearHistoryBtn').onclick = () => {
-  localStorage.removeItem(STORAGE_KEY);
-  renderHistory();
-};
-
-document.getElementById('resetBtn').onclick = () => {
-  if(!confirm('Clear all saved progress and history? This cannot be undone.')) return;
-  localStorage.removeItem(STORAGE_KEY);
-  current = 0;
-  answers = {};
-  activeTopic = "All";
-  filtered = getFiltered();
-  renderTopicBar();
-  renderQuestion();
-  document.getElementById('quizArea').classList.remove('hidden');
-  document.getElementById('resultsArea').classList.add('hidden');
-};
-
-renderTopicBar();
-renderQuestion();
-</script>
+<script src="glossary/biology.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
