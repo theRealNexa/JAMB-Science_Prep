@@ -120,6 +120,10 @@
   .fact-text{font-size:13.5px;line-height:1.55;color:var(--ink);margin-bottom:8px;}
   .fact-tag{font-size:10px;letter-spacing:0.05em;text-transform:uppercase;color:var(--green);font-weight:700;}
   .section-label{font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-mute);font-weight:700;margin:22px 0 12px;}
+  .missed-header{display:flex;justify-content:space-between;align-items:center;margin:22px 0 12px;}
+  .missed-header .section-label{margin:0;}
+  .missed-delete-btn{margin-top:10px;font-size:11px;color:var(--red);background:none;border:1px solid #f3c9c5;padding:5px 10px;border-radius:8px;cursor:pointer;font-family:var(--mono);font-weight:700;}
+  .missed-delete-btn:hover{background:var(--red-soft);}
 
   .hidden{display:none;}
 </style>
@@ -181,6 +185,12 @@
       </div>
 
       <button class="start-btn" id="startBtn">Start Study Session →</button>
+
+      <div class="missed-header" id="missedHeaderRow">
+        <div class="section-label" id="missedSectionLabel" style="display:none;margin:0;">Missed questions (timed sets)</div>
+        <button class="clear-history" id="clearMissedBtn" style="display:none;">Clear all</button>
+      </div>
+      <div id="missedList"></div>
 
       <div class="section-label" id="bmkSectionLabel" style="display:none;">Bookmarked questions</div>
       <div id="bmkList"></div>

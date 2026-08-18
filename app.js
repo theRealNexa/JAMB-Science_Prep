@@ -22,6 +22,7 @@ const GLOSSARY_SUBJECTS = {
 const K_HISTORY = "jamb-quiz-history-v2";
 const K_STREAK = "jamb-streak-v1";
 const K_BOOKMARKS = "jamb-bookmarks-v1";
+const K_MISSED = "jamb-missed-v1";
 
 // ===================== STORAGE HELPERS =====================
 function load(key, fallback){
@@ -85,7 +86,7 @@ function renderTopicBar(){
     const chip = document.createElement('div');
     chip.className = 'chip' + (t === activeTopic ? ' active' : '');
     chip.textContent = t;
-    chip.onclick = () => { activeTopic = t; renderTopicBar(); renderBookmarkList(); };
+    chip.onclick = () => { activeTopic = t; renderTopicBar(); renderBookmarkList(); renderMissedList(); };
     bar.appendChild(chip);
   });
 }
@@ -190,6 +191,55 @@ function renderBookmarkList(){
     card.style.borderColor = 'var(--line)';
     card.innerHTML = `<div class="review-q">${q.q}</div><div class="review-line" style="color:var(--ink-mute);">${q.subject || ''} · ${q.topic}</div>`;
     list.appendChild(card);
+  });
+}
+
+// ===================== MISSED QUESTIONS (timed mode only) =====================
+function removeMissed(qId){
+  const missed = load(K_MISSED, []);
+  save(K_MISSED, missed.filter(m => m.qId !== qId));
+  renderMissedList();
+}
+function clearAllMissed(){
+  if(!confirm('Clear all saved missed questions?')) return;
+  localStorage.removeItem(K_MISSED);
+  renderMissedList();
+}
+document.getElementById('clearMissedBtn').onclick = clearAllMissed;
+
+function renderMissedList(){
+  const label = document.getElementById('missedSectionLabel');
+  const list = document.getElementById('missedList');
+  const clearBtn = document.getElementById('clearMissedBtn');
+  const missed = load(K_MISSED, []);
+  list.innerHTML = '';
+
+  if(missed.length === 0){
+    label.style.display = 'none';
+    clearBtn.style.display = 'none';
+    return;
+  }
+  label.style.display = 'block';
+  clearBtn.style.display = 'inline-block';
+
+  const letters = ['A','B','C','D'];
+  missed.forEach(m => {
+    const q = ALL_QUESTIONS.find(item => item._id === m.qId);
+    if(!q) return; // question no longer exists in the bank
+    const card = document.createElement('div');
+    card.className = 'review-card';
+    card.innerHTML = `
+      <div class="review-q">${q.q}</div>
+      <div class="review-line your">Your answer: ${m.yourAnswer}</div>
+      <div class="review-line correct">Correct answer: ${letters[q.correct]}. ${q.options[q.correct]}</div>
+      <button class="missed-delete-btn" data-qid="${m.qId}">Remove</button>
+    `;
+    list.appendChild(card);
+  });
+
+  // wire up individual delete buttons
+  list.querySelectorAll('.missed-delete-btn').forEach(btn => {
+    btn.onclick = () => removeMissed(Number(btn.dataset.qid));
   });
 }
 
@@ -328,6 +378,24 @@ function finishQuiz(){
     reviewSection.classList.add('hidden');
   }
 
+  // Save missed questions from timed sets for later review
+  if(mode === 'timed' && wrongList.length > 0){
+    const missed = load(K_MISSED, []);
+    const letters = ['A','B','C','D'];
+    wrongList.forEach(({q, userAns}) => {
+      // avoid duplicate entries for the same question — replace if it already exists
+      const existingIdx = missed.findIndex(m => m.qId === q._id);
+      const entry = {
+        qId: q._id,
+        date: new Date().toISOString(),
+        yourAnswer: userAns !== undefined ? `${letters[userAns]}. ${q.options[userAns]}` : 'No answer'
+      };
+      if(existingIdx >= 0) missed[existingIdx] = entry;
+      else missed.unshift(entry);
+    });
+    save(K_MISSED, missed.slice(0, 200));
+  }
+
   // persist attempt
   const history = load(K_HISTORY, []);
   history.unshift({
@@ -365,6 +433,7 @@ document.getElementById('retryBtn').onclick = () => {
   document.getElementById('resultsArea').classList.add('hidden');
   document.getElementById('setupArea').classList.remove('hidden');
   renderBookmarkList();
+  renderMissedList();
 };
 
 document.getElementById('clearHistoryBtn').onclick = () => {
@@ -384,6 +453,7 @@ document.getElementById('resetBtn').onclick = () => {
   renderTopicBar();
   renderStreak();
   renderBookmarkList();
+  renderMissedList();
   document.getElementById('quizArea').classList.add('hidden');
   document.getElementById('resultsArea').classList.add('hidden');
   document.getElementById('setupArea').classList.remove('hidden');
@@ -464,6 +534,7 @@ function renderGlossaryContent(){
 renderTopicBar();
 renderStreak();
 renderBookmarkList();
+renderMissedList();
 renderGlossarySubjectBar();
 renderGlossaryContent();
 setMode('study');
