@@ -2,7 +2,7 @@
 
 A self-contained, multi-subject multiple-choice quiz app for JAMB revision — Mathematics, English, Chemistry, and Biology. No build step, no backend, no dependencies.
 
-**[Live demo](#)** *(add your deployed link here once hosted)*
+**[Live demo](#)** *[(https://jambcbtprep.vercel.app/)]*
 
 ## Features
 
@@ -17,13 +17,11 @@ A self-contained, multi-subject multiple-choice quiz app for JAMB revision — M
 ## Project structure
 
 ```
-jamb-prep/
-├── index.html              # app shell — markup, styles, quiz logic
-└── questions/
-    ├── chemistry.js        # Chemistry question bank
-    ├── mathematics.js      # Mathematics question bank
-    ├── english.js           # English Language question bank
-    └── biology.js           # Biology question bank
+jambcbtprep/
+├── index.html
+├── app.js
+├── questions/  (chemistry Qs, math/english/biology empty scaffolds)
+└── glossary/   (biology.js — terms + facts)
 ```
 
 Each subject's questions live in their own file under `questions/` and are loaded as plain `<script>` tags in `index.html`, then merged into one array at runtime. This keeps subjects easy to add to independently — no build tooling needed.
