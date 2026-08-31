@@ -250,6 +250,23 @@
 
 </div>
 
+<!-- Firebase (cloud sync) — config below is safe to be public; real access
+     control lives in Firestore security rules, not in hiding this key -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script>
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+	apiKey: "AIzaSyCOZuQMlBK4mPQsTXGx0CIAyb9LZBe3sf0",
+	authDomain: "jamb-science-prep.firebaseapp.com",
+	projectId: "jamb-science-prep",
+	storageBucket: "jamb-science-prep.firebasestorage.app",
+	messagingSenderId: "47009434500",
+    appId: "1:47009434500:web:32ae49a8ab5e8bd590abd1",
+	measurementId: "G-SFX849DCQ9"
+  };
+</script>
+
 <script src="questions/chemistry.js"></script>
 <script src="questions/mathematics.js"></script>
 <script src="questions/english.js"></script>

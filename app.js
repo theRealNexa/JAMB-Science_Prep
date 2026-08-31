@@ -23,6 +23,7 @@ const K_HISTORY = "jamb-quiz-history-v2";
 const K_STREAK = "jamb-streak-v1";
 const K_BOOKMARKS = "jamb-bookmarks-v1";
 const K_MISSED = "jamb-missed-v1";
+const K_USERNAME = "jamb-username-v1";
 
 // ===================== STORAGE HELPERS =====================
 function load(key, fallback){
@@ -32,6 +33,50 @@ function load(key, fallback){
 function save(key, val){
   try{ localStorage.setItem(key, JSON.stringify(val)); return true; }
   catch(e){ return false; }
+}
+
+// ===================== USER IDENTITY =====================
+function getUsername(){
+  return localStorage.getItem(K_USERNAME);
+}
+function ensureUsername(){
+  let name = getUsername();
+  if(!name){
+    while(!name || !name.trim()){
+      name = prompt("What's your name? (so your progress can be tracked)");
+    }
+    name = name.trim().slice(0, 40);
+    localStorage.setItem(K_USERNAME, name);
+  }
+  return name;
+}
+
+// ===================== FIRESTORE SYNC =====================
+// Fire-and-forget: never blocks the quiz UI, and failures are silent
+// (e.g. offline) since localStorage remains the source of truth locally.
+let firestoreReady = false;
+let db = null;
+
+function initFirestore(){
+  try{
+    if(typeof firebase === 'undefined' || !window.FIREBASE_CONFIG) return;
+    firebase.initializeApp(window.FIREBASE_CONFIG);
+    db = firebase.firestore();
+    firestoreReady = true;
+  }catch(e){
+    firestoreReady = false;
+  }
+}
+
+function syncToCloud(collection, data){
+  if(!firestoreReady || !db) return;
+  try{
+    db.collection(collection).add({
+      ...data,
+      userName: getUsername() || "Unknown",
+      syncedAt: new Date().toISOString()
+    }).catch(() => { /* silent fail — offline or blocked, localStorage still has it */ });
+  }catch(e){ /* silent fail */ }
 }
 
 // ===================== STATE =====================
@@ -59,6 +104,7 @@ function updateStreakOnActivity(){
   else s.count = 1;
   s.lastDate = today;
   save(K_STREAK, s);
+  syncToCloud('streaks', { count: s.count, lastDate: s.lastDate });
   return s;
 }
 function renderStreak(){
@@ -164,9 +210,22 @@ function updateTimerDisplay(){
 // ===================== BOOKMARK =====================
 function isBookmarked(qId){ return bookmarks.includes(qId); }
 function toggleBookmark(qId){
-  if(isBookmarked(qId)) bookmarks = bookmarks.filter(id => id !== qId);
+  const wasBookmarked = isBookmarked(qId);
+  if(wasBookmarked) bookmarks = bookmarks.filter(id => id !== qId);
   else bookmarks.push(qId);
   save(K_BOOKMARKS, bookmarks);
+
+  // sync current bookmark state for this question to cloud
+  const q = ALL_QUESTIONS.find(item => item._id === qId);
+  if(q){
+    syncToCloud('bookmarks', {
+      questionId: qId,
+      questionText: q.q,
+      subject: q.subject || '',
+      topic: q.topic,
+      action: wasBookmarked ? 'removed' : 'added'
+    });
+  }
 }
 document.getElementById('bmkBtn').onclick = () => {
   const q = sessionQuestions[current];
@@ -385,26 +444,38 @@ function finishQuiz(){
     wrongList.forEach(({q, userAns}) => {
       // avoid duplicate entries for the same question — replace if it already exists
       const existingIdx = missed.findIndex(m => m.qId === q._id);
+      const yourAnswer = userAns !== undefined ? `${letters[userAns]}. ${q.options[userAns]}` : 'No answer';
       const entry = {
         qId: q._id,
         date: new Date().toISOString(),
-        yourAnswer: userAns !== undefined ? `${letters[userAns]}. ${q.options[userAns]}` : 'No answer'
+        yourAnswer: yourAnswer
       };
       if(existingIdx >= 0) missed[existingIdx] = entry;
       else missed.unshift(entry);
+
+      syncToCloud('missed', {
+        questionId: q._id,
+        questionText: q.q,
+        subject: q.subject || '',
+        topic: q.topic,
+        yourAnswer: yourAnswer,
+        correctAnswer: `${letters[q.correct]}. ${q.options[q.correct]}`
+      });
     });
     save(K_MISSED, missed.slice(0, 200));
   }
 
   // persist attempt
   const history = load(K_HISTORY, []);
-  history.unshift({
+  const attemptRecord = {
     date: new Date().toISOString(),
     topic: activeTopic,
     mode: mode,
     score: correctCount,
     total: sessionQuestions.length
-  });
+  };
+  history.unshift(attemptRecord);
+  syncToCloud('attempts', attemptRecord);
   save(K_HISTORY, history.slice(0, 20));
   renderHistory();
 
@@ -531,6 +602,8 @@ function renderGlossaryContent(){
 }
 
 // ===================== INIT =====================
+initFirestore();
+ensureUsername();
 renderTopicBar();
 renderStreak();
 renderBookmarkList();
