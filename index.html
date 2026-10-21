@@ -129,6 +129,26 @@
   .missed-delete-btn{margin-top:10px;font-size:11px;color:var(--red);background:none;border:1px solid #f3c9c5;padding:5px 10px;border-radius:8px;cursor:pointer;font-family:var(--mono);font-weight:700;}
   .missed-delete-btn:hover{background:var(--red-soft);}
 
+  .welcome{font-family:var(--serif);font-size:15px;color:var(--ink-dim);margin:0 0 6px;}
+  .dept-badge{font-size:11px;font-weight:700;color:#2c6b45;background:var(--green-soft);border:1px solid #c3ecd3;padding:6px 10px;border-radius:100px;cursor:pointer;white-space:nowrap;}
+  .dept-badge:hover{border-color:var(--green);}
+
+  .chip.small{padding:6px 11px;font-size:11px;}
+  .topic-panel{background:var(--panel-2);border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:12px;}
+  .panel-label{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-mute);font-weight:700;margin-bottom:8px;}
+  .subject-label{font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-mute);font-weight:700;margin-bottom:8px;}
+
+  .modal-back{position:fixed;inset:0;background:rgba(15,46,26,0.45);display:flex;align-items:center;justify-content:center;padding:16px;z-index:50;}
+  .modal-back.hidden{display:none;}
+  .modal{background:#fff;border-radius:18px;padding:26px 22px;width:100%;max-width:420px;box-shadow:0 10px 40px rgba(0,0,0,0.2);}
+  .modal h2{font-family:var(--serif);font-size:22px;margin:0 0 16px;}
+  .modal label{display:block;font-size:12px;font-weight:700;color:var(--ink-dim);margin:14px 0 8px;}
+  .modal input{width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:12px;font-family:var(--mono);font-size:14px;color:var(--ink);}
+  .modal input:focus{outline:none;border-color:var(--green);}
+  .modal-note{font-size:11.5px;color:var(--ink-mute);line-height:1.5;margin-top:12px;}
+  .modal-err{font-size:12px;color:var(--red);min-height:16px;margin-top:8px;font-weight:700;}
+  .modal-actions{display:flex;gap:10px;margin-top:10px;}
+
   .hidden{display:none;}
 </style>
 </head>
@@ -137,12 +157,14 @@
 
   <header>
     <div>
-      <div class="eyebrow">Chemistry &middot; Mathematics &middot; English &middot; Biology</div>
-      <h1>JAMB Core Science Prep</h1>
+      <div class="eyebrow" id="eyebrow">JAMB Prep</div>
+      <div class="welcome" id="welcome"></div>
+      <h1>JAMB Prep</h1>
       <div class="sub">Practice questions, timed mock sets, and quick-reference facts. Saved on this device.</div>
     </div>
     <div class="header-right">
       <div class="streak" id="streakBadge">🔥 0 day streak</div>
+      <div class="dept-badge" id="deptBadge" title="Change name or department">Set department</div>
       <button class="reset-btn" id="resetBtn" title="Clear all saved progress and history">Reset</button>
     </div>
   </header>
@@ -156,7 +178,9 @@
   <div id="practiceTab">
 
     <div id="setupArea">
-      <div class="topic-bar" id="topicBar"></div>
+      <div class="subject-label">Subjects</div>
+      <div class="topic-bar" id="subjectBar"></div>
+      <div id="topicPanels"></div>
 
       <div class="mode-row">
         <div class="mode-btn active" id="modeStudy">
@@ -252,6 +276,24 @@
     <div id="glossaryContent"></div>
   </div>
 
+</div>
+
+<!-- Profile modal: name + department -->
+<div class="modal-back hidden" id="profileModal">
+  <div class="modal">
+    <div class="eyebrow">Set up</div>
+    <h2>Who's studying?</h2>
+    <label for="nameInput">Your name</label>
+    <input id="nameInput" type="text" maxlength="40" placeholder="e.g. Ada" autocomplete="off">
+    <label>Your department</label>
+    <div class="topic-bar" id="deptOptions" style="margin-bottom:0;"></div>
+    <div class="modal-note">Mathematics and English are for everyone. Your department decides which other subjects you see.</div>
+    <div class="modal-err" id="profileErr"></div>
+    <div class="modal-actions">
+      <button class="nav hidden" id="profileCancel">Cancel</button>
+      <button class="nav primary" id="profileSave">Continue &rarr;</button>
+    </div>
+  </div>
 </div>
 
 <!-- Firebase (cloud sync) — config below is safe to be public; real access
